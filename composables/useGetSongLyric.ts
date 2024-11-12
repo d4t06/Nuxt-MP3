@@ -24,7 +24,7 @@ export default function useGetSongLyric() {
          );
 
          if (data) {
-            const parseLyrics = JSON.parse(data.value?.data?.lyrics || "") as Lyric[];
+            const parseLyrics = JSON.parse(data.value?.data?.lyrics || "[]") as Lyric[];
             lyrics.value = parseLyrics;
          }
       } catch (error) {

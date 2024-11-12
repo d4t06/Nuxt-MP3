@@ -15,9 +15,7 @@ import { chekcDisable } from "~/share/libs/appHelper";
 import SongInfoAndLyric from "./SongInfoAndLyric.vue";
 
 const store = usePlayerStore();
-const { currentSong, songs, audioEle } = storeToRefs(store);
-
-const tab = ref<Tab>("playing");
+const { currentSong, songs, audioEle, tab } = storeToRefs(store);
 
 const {
    status,
@@ -30,9 +28,8 @@ const {
    processLineRef,
 } = usePlayer({ audioEle: audioEle.value! });
 
-const back = () => (tab.value = "playing");
 const toggleTab = () => {
-   tab.value === "playing" ? (tab.value = "queue") : (tab.value = "playing");
+   tab.value === "playing" ? (store.tab = "queue") : (store.tab = "playing");
 };
 
 const handleShowHide = (active: boolean) => {
@@ -53,7 +50,7 @@ const classes = {
       <div
          class="p-3 bg-amber-800 text-amber-100 rounded-[16px] border-[4px] border-amber-900 border-b-[8px]"
       >
-         <div :class="handleShowHide(tab === 'playing')">
+         <div :class="handleShowHide(tab === 'playing' || tab === 'lyric')">
             <SongInfoAndLyric />
 
             <div
@@ -99,7 +96,7 @@ const classes = {
          </div>
 
          <div :class="handleShowHide(tab === 'queue')">
-            <SongList :tab="tab" :back="back" />
+            <SongList />
          </div>
       </div>
    </div>
@@ -115,5 +112,6 @@ const classes = {
       </Button>
 
       <VolumeButton v-if="audioEle" :audioEle="audioEle" />
+      <TimerButton :is-playing="status === 'playing'" />
    </div>
 </template>

@@ -3,12 +3,6 @@ import { SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/vue/24/outline";
 import useVolume from "~/composables/useVolumeButton";
 import Button from "~/share/components/Button.vue";
 
-type Props = {
-   audioEle: HTMLAudioElement;
-};
-
-const Props = defineProps<Props>();
-
 const {
    handleMute,
    handleSetVolume,
@@ -16,9 +10,7 @@ const {
    volumeHolderRef,
    volumeLineRef,
    isMute,
-} = useVolume({
-   audioEle: Props.audioEle,
-});
+} = useVolume();
 
 const classes = {
    wrapper: `volume-btn-wrapper group relative

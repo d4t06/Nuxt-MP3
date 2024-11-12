@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import ScrollText from './ScrollText.vue';
+import ScrollText from "./ScrollText.vue";
 
 const store = usePlayerStore();
-const tab = ref<Tab>("playing");
+const { tab } = storeToRefs(store);
 
 const handleShowHide = (active: boolean) => {
-   if (active) return "opacity-100 h-auto";
-   else return "opacity-0 pointer-events-none h-0";
+   if (active) return "opacity-100";
+   else return "opacity-0 pointer-events-none !h-0";
 };
 </script>
 
 <template>
    <div
       class="mt-2"
-      @click="() => (tab === 'playing' ? (tab = 'lyric') : (tab = 'playing'))"
+      @click="() => (tab === 'playing' ? (store.tab = 'lyric') : (store.tab = 'playing'))"
    >
       <div
          :class="`${handleShowHide(
@@ -40,16 +40,15 @@ const handleShowHide = (active: boolean) => {
       </div>
 
       <div
-         :class="`${handleShowHide(
+         :class="`lyric-container h-[30vh] ${handleShowHide(
             tab === 'lyric'
-         )}  overflow-auto text-center relative text-amber-100 font-[800] text-2xl no-scrollbar mask-vertical`"
+         )}  overflow-auto text-center relative [&>*]:mt-3 [&>*:last-child]:mb-[15vh] text-amber-100 font-[700] text-2xl no-scrollbar mask-vertical`"
       >
          <SongLyricWrapper />
-
-         <p v-if="tab === 'lyric'" class="text-sm mt-2 text-amber-100/60 text-center">
-            {{ store.currentSong?.name || "..." }} -
-            {{ store.currentSong?.singer || "..." }}
-         </p>
       </div>
+      <p v-if="tab === 'lyric'" class="mt-2 text-amber-100/60 text-center">
+         {{ store.currentSong?.name || "..." }} -
+         {{ store.currentSong?.singer || "..." }}
+      </p>
    </div>
 </template>
