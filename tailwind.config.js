@@ -8,6 +8,7 @@ export default {
       borderOpacity: false,
    },
    content: [
+      "./share/components/**/*.{js,vue,ts}",
       "./components/**/*.{js,vue,ts}",
       "./layouts/**/*.vue",
       "./pages/**/*.vue",

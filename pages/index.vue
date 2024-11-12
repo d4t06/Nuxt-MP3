@@ -1,18 +1,23 @@
 <script setup lang="ts">
-import Button from "../share/components/Button.vue";
+import Player from "~/components/Player.vue";
 
+import { usePlayerStore } from "~/stores/player";
 
-const handleButtonOnClick = () => {
-   console.log("slfadsljf")
+const store = usePlayerStore();
+const { audioEle } = storeToRefs(store);
+
+const runtimeConfig = useRuntimeConfig();
+
+const { data } = await useFetch<{ data: { songs: Song[] } }>(
+   `${runtimeConfig.public.apiBase}/songs`
+);
+
+if (data.value?.data.songs) {
+   store.songs = data.value?.data.songs;
 }
 </script>
 
 <template>
-   <p>This is home page</p>
-
-   <Head>
-      <Title>Nuxt MP3</Title>
-   </Head>
-
-   <Button :on-click="handleButtonOnClick"> button </Button>
+   <audio ref="audioEle" :src="store.currentSong?.song_url" class="hidden"></audio>
+   <Player v-if="audioEle" />
 </template>

@@ -18,10 +18,15 @@ export default defineNuxtConfig({
       },
    },
 
-   modules: ["@nuxtjs/google-fonts"],
+   modules: ["@nuxtjs/google-fonts", "@pinia/nuxt"],
    googleFonts: {
       families: {
          Inter: ["500..700"],
+      },
+   },
+   runtimeConfig: {
+      public: {
+         apiBase: process.env.NUXT_PUBLIC_API_BASE || "/api",
       },
    },
 });
