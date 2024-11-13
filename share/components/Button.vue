@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ArrowPathIcon } from "@heroicons/vue/24/outline";
 import { cva, type VariantProps } from "class-variance-authority";
+import { ref } from "vue";
 
 const classes = {
    active: "before:shadow-none font-[500] translate-y-[2px] text-[#cd1818]",
@@ -38,7 +39,7 @@ const ButtonVariant = cva(classes.button, {
 type TypeProps = VariantProps<typeof ButtonVariant>;
 
 type ButtonProps = {
-   onClick?: () => void;
+   onClick?: (e: MouseEvent) => void;
    href?: string;
    active?: boolean;
    loading?: boolean;
@@ -61,6 +62,10 @@ const {
    onClick,
    active,
 } = toRefs(props);
+
+const buttonRef = ref<HTMLButtonElement>();
+
+defineExpose({ buttonRef });
 </script>
 
 <template>
@@ -74,7 +79,8 @@ const {
 
    <template v-else>
       <button
-         :disabled="loading || disabled"
+         ref="buttonRef"
+         :disabled="props.loading || disabled"
          @click="onClick"
          :class="`${ButtonVariant({
             variant,

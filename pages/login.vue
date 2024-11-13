@@ -7,8 +7,18 @@ definePageMeta({
 
 const { signIn } = useAuth();
 
-const handleLogin = () => {
-   signIn({ username: "ad", password: "asd" });
+const password = ref("");
+const isFetching = ref(false);
+
+const handleLogin = async () => {
+   try {
+      isFetching.value = true;
+
+      await signIn({ password: password.value }, { callbackUrl: "/dashboard" });
+   } catch (error) {
+   } finally {
+      isFetching.value = false;
+   }
 };
 </script>
 
@@ -19,12 +29,13 @@ const handleLogin = () => {
          @submit.prevent="handleLogin"
       >
          <input
+            v-model="password"
             type="text"
-            placeholder="password"
-            class="bg-[rgba(0,0,0,.15)] rounded-md p-2 outline-none text-lg"
+            placeholder="******"
+            class="bg-[rgba(0,0,0,.15)] rounded-md p-2 outline-none text-amber-100 text-lg placeholder:text-[#808080]"
          />
 
-         <Button class-name="mt-3 py-2 text-lg">Sign in</Button>
+         <Button :loading="isFetching" class-name="mt-3 py-2 text-lg">Sign in</Button>
 
          <p class="text-sm mt-2 text-right">No have account jet?, get out!</p>
       </form>

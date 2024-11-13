@@ -31,20 +31,16 @@ export default defineNuxtConfig({
    },
    auth: {
       isEnabled: true,
-      // baseURL: "https://nest-mp3.vercel.app/api/",
       provider: {
          type: "local",
          endpoints: {
-            signIn: { path: "", method: "post" },
-            getSession: { path: "", method: "get" },
+            getSession: { path: "/user", method: "get" },
          },
          pages: {
             login: "/login",
          },
-         session: {
-            dataType: {
-               token: "string",
-            },
+         token: {
+            maxAgeInSeconds: 1800, //default
          },
       },
    },

@@ -10,7 +10,7 @@ import Button from "~/share/components/Button.vue";
       <slot />
    </div>
 
-   <Button size="clear" class-name="!absolute left-8 bottom-8 p-2">
+   <Button href="/" size="clear" class-name="!absolute left-8 bottom-8 p-2">
       <HomeIcon class="w-6" />
    </Button>
 </template>
