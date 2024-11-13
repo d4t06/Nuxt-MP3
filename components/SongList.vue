@@ -2,15 +2,9 @@
 import useSongListEvent from "~/composables/useSongList";
 import SongListItem from "./SongListItem.vue";
 
-type Props = {
-   back: () => void;
-   tab: Tab;
-};
-
-const props = defineProps<Props>();
 const store = usePlayerStore();
 
-const { songListRef } = useSongListEvent({ back: props.back, tab: toRef(() => props.tab) });
+const { songListRef } = useSongListEvent();
 </script>
 
 <template>

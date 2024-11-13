@@ -1,11 +1,9 @@
 import { onWatcherCleanup, type Ref } from "@vue/reactivity";
 
-type Props = {
-   tab: Ref<Tab>;
-   back: () => void;
-};
+export default function useSongListEvent() {
+   const store = usePlayerStore();
+   const { tab } = storeToRefs(store);
 
-export default function useSongListEvent({ tab, back }: Props) {
    const songListRef = ref<HTMLDivElement>();
 
    const scroll = (el: Element) => {
@@ -28,7 +26,7 @@ export default function useSongListEvent({ tab, back }: Props) {
       )
          return;
 
-      back();
+      store.tab = "playing";
    };
 
    watchEffect(() => {

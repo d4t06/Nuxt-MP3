@@ -42,8 +42,9 @@ export default function usePlayer({ audioEle }: Props) {
    };
 
    const handlePlayPause = () => {
-      if (currentIndex === null) {
-         const randomIndex = Math.round(Math.random() * songs.value.length);
+      if (currentIndex.value === null && songs.value.length) {
+         const randomIndex = Math.round(Math.random() * songs.value.length - 1);
+
          return (store.currentIndex = randomIndex);
       }
 

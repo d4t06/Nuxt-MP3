@@ -1,20 +1,17 @@
-"use client";
-
 import { getLocalStorage, setLocalStorage } from "~/share/libs/localStorage";
 import useDebounce from "./useDebounce";
 
-type Props = {
-   audioEle: HTMLAudioElement;
-};
+export default function useVolume() {
+   const store = usePlayerStore();
+   const { audioEle } = storeToRefs(store);
 
-export default function useVolume({ audioEle }: Props) {
    const isMute = ref(false);
    const volume = ref(1);
 
    const volumeHolderRef = ref<HTMLDivElement>();
    const volumeLineRef = ref<HTMLDivElement>();
 
-   const debounceVolume = useDebounce<Number>(volume, 500, 0);
+   const debounceVolume = useDebounce<number>(volume, 500, 0);
 
    const handleSetVolume = (e: MouseEvent) => {
       const node = e.target as HTMLElement;
@@ -70,23 +67,24 @@ export default function useVolume({ audioEle }: Props) {
    );
 
    watch([isMute], () => {
-      if (!audioEle) return;
+      if (!audioEle.value) return;
 
-      audioEle.muted = isMute.value;
+      audioEle.value.muted = isMute.value;
    });
 
    watch([debounceVolume], () => {
-      setLocalStorage("volume", debounceVolume.value);
+      if (debounceVolume.value !== undefined)
+         setLocalStorage("volume", debounceVolume.value);
    });
 
    watchEffect(() => {
       if (volume.value === 0) isMute.value = true;
       else isMute.value = false;
 
-      if (audioEle && volumeLineRef.value && volumeHolderRef.value) {
+      if (audioEle.value && volumeLineRef.value && volumeHolderRef.value) {
          const ratio = volume.value * 100;
 
-         audioEle.volume = volume.value;
+         audioEle.value.volume = volume.value;
          volumeLineRef.value.style.background = `linear-gradient(to top, rgb(253, 230, 138) ${ratio}%, white ${ratio}%, white 100%)`;
          volumeHolderRef.value.style.bottom = `${ratio}%`;
       }

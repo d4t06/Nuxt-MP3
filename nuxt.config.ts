@@ -18,7 +18,7 @@ export default defineNuxtConfig({
       },
    },
 
-   modules: ["@nuxtjs/google-fonts", "@pinia/nuxt"],
+   modules: ["@nuxtjs/google-fonts", "@pinia/nuxt", "@sidebase/nuxt-auth"],
    googleFonts: {
       families: {
          Inter: ["500..700"],
@@ -26,7 +26,26 @@ export default defineNuxtConfig({
    },
    runtimeConfig: {
       public: {
-         apiBase: process.env.NUXT_PUBLIC_API_BASE || "/api",
+         apiBase: process.env.NUXT_PUBLIC_API_BASE || "https://nest-mp3.vercel.app/api",
+      },
+   },
+   auth: {
+      isEnabled: true,
+      // baseURL: "https://nest-mp3.vercel.app/api/",
+      provider: {
+         type: "local",
+         endpoints: {
+            signIn: { path: "", method: "post" },
+            getSession: { path: "", method: "get" },
+         },
+         pages: {
+            login: "/login",
+         },
+         session: {
+            dataType: {
+               token: "string",
+            },
+         },
       },
    },
 });

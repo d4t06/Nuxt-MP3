@@ -1,7 +1,7 @@
 import { onWatcherCleanup } from "vue";
 
 type Props = {
-   lyrics: Lyric[];
+   lyrics: Ref<Lyric[]>;
 };
 
 const LYRIC_TIME_BOUNDED = 0.3;
@@ -10,28 +10,27 @@ export default function useSongLyric({ lyrics }: Props) {
    const store = usePlayerStore();
    const { audioEle, tab } = storeToRefs(store);
 
-   const currentTime = ref(0);
    const currentLyricIndex = ref(0);
+   let lyricElements: HTMLCollection | null = null;
 
-   const scrollBehavior = ref<ScrollBehavior>("smooth");
-   const lyricRefs = ref<HTMLDivElement[]>([]);
+   let currentTime = 0;
+   let scrollBehavior: ScrollBehavior = "smooth";
 
    const handleTimeUpdate = () => {
-      if (!audioEle.value) return;
+      if (!audioEle.value || !lyricElements) return;
 
-      const direction =
-         audioEle.value.currentTime > currentTime.value ? "forward" : "backward";
+      const direction = audioEle.value.currentTime > currentTime ? "forward" : "backward";
 
-      currentTime.value = audioEle.value.currentTime;
+      currentTime = audioEle.value.currentTime;
 
       let nextIndex = currentLyricIndex.value;
 
       switch (direction) {
          case "forward":
             while (
-               lyrics[nextIndex + 1] &&
-               lyrics[nextIndex + 1].start - LYRIC_TIME_BOUNDED <
-                  currentTime.value + LYRIC_TIME_BOUNDED
+               lyrics.value[nextIndex + 1] &&
+               lyrics.value[nextIndex + 1].start - LYRIC_TIME_BOUNDED <
+                  currentTime + LYRIC_TIME_BOUNDED
             ) {
                nextIndex += 1;
             }
@@ -39,9 +38,9 @@ export default function useSongLyric({ lyrics }: Props) {
 
          case "backward":
             while (
-               lyrics[nextIndex - 1] &&
-               lyrics[nextIndex - 1].end - LYRIC_TIME_BOUNDED >
-                  currentTime.value + LYRIC_TIME_BOUNDED
+               lyrics.value[nextIndex - 1] &&
+               lyrics.value[nextIndex - 1].end - LYRIC_TIME_BOUNDED >
+                  currentTime + LYRIC_TIME_BOUNDED
             ) {
                nextIndex -= 1;
             }
@@ -51,25 +50,25 @@ export default function useSongLyric({ lyrics }: Props) {
       if (nextIndex !== currentLyricIndex.value) {
          // make scroll instantly
          if (Math.abs(nextIndex - currentLyricIndex.value) > 5)
-            scrollBehavior.value = "instant";
+            scrollBehavior = "instant";
 
          currentLyricIndex.value = nextIndex;
          currentLyricIndex.value = nextIndex;
 
-         if (lyricRefs.value[nextIndex]) {
-            lyricRefs.value[nextIndex].scrollIntoView({
-               behavior: scrollBehavior.value,
+         if (lyricElements[nextIndex]) {
+            lyricElements[nextIndex].scrollIntoView({
+               behavior: scrollBehavior,
                block: "center",
             });
 
-            if (scrollBehavior.value === "instant") scrollBehavior.value = "smooth";
+            if (scrollBehavior === "instant") scrollBehavior = "smooth";
          }
       }
    };
 
    // Add event to get current time
    watchEffect(() => {
-      if (!audioEle.value || tab.value !== "lyric" || !lyrics.length) return;
+      if (!audioEle.value || tab.value !== "lyric" || !lyrics.value.length) return;
 
       audioEle.value?.addEventListener("timeupdate", handleTimeUpdate);
 
@@ -78,5 +77,17 @@ export default function useSongLyric({ lyrics }: Props) {
       });
    });
 
-   return { lyricRefs, currentLyricIndex };
+   watchEffect(
+      () => {
+         if (!lyrics.value.length) return;
+
+         const lyricContainer = document.querySelector(".lyric-container");
+         if (lyricContainer) lyricElements = lyricContainer.children;
+      },
+      {
+         flush: "post",
+      }
+   );
+
+   return { currentLyricIndex };
 }

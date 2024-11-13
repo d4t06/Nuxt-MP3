@@ -29,7 +29,7 @@ const getClass = () => {
 </script>
 
 <template>
-   <p ref="{ref}" :class="`select-none ${getClass()}`">
+   <p :class="`select-none ${getClass()}`">
       {{ props.text }}
    </p>
 </template>

@@ -77,8 +77,6 @@ export default function useScrollText({ content }: Props) {
    watch(
       [content],
       () => {
-         console.log("handle scroll");
-
          handleScroll();
 
          onWatcherCleanup(handleReset);
