@@ -6,10 +6,9 @@ type Props = {
 };
 
 export default function useTimer({ isPlaying }: Props) {
+   const store = usePlayerStore();
 
-   const store = usePlayerStore()
-
-   const {audioEle} = storeToRefs(store)
+   const { audioEle } = storeToRefs(store);
 
    // store user timer, decide add song event or not
    const isActive = ref(0);
@@ -23,22 +22,19 @@ export default function useTimer({ isPlaying }: Props) {
       } catch (error) {}
    };
 
-   const clearTimer = (clearCountDown?: boolean) => {
+   const clearTimer = () => {
       setLocalStorage("timer", 0);
       isActive.value = 0;
       isEnd.value = true;
 
-      if (clearCountDown) countDown.value = 0;
+      countDown.value = 0;
    };
 
    const handleSongEnd = () => {
       if (countDown.value - 1 > 0) {
          setLocalStorage("timer", countDown.value - 1);
-         return countDown.value - 1;
-      }
-
-      clearTimer();
-      return 0;
+         countDown.value = countDown.value - 1;
+      } else clearTimer();
    };
 
    // load localStorage

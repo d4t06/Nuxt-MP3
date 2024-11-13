@@ -8,6 +8,12 @@ type Props = {
    persisted?: boolean;
 };
 
+export type ModalRef = {
+   open: () => void, 
+   close: () => void
+} 
+
+
 const props = defineProps<Props>();
 
 const { isMounted, isOpen, close, open } = useModal();
@@ -22,7 +28,7 @@ const handleOverlayClick = (e: MouseEvent) => {
 defineExpose({ close, open });
 
 const classes = {
-   unMountedContent: "opacity-0 scale-[.9 ]",
+   unMountedContent: "opacity-0 scale-[.9]",
    mountedContent: "opacity-100 scale-[1]",
    unMountedLayer: "opacity-0",
    mountedLayer: "opacity-100",
@@ -47,8 +53,8 @@ const classes = {
       >
          <div
             :class="`${
-               props.childClassName || ' py-[12px] px-[16px]'
-            } rounded-[8px] bg-amber-100`"
+               props.childClassName || ' py-3 px-4'
+            } rounded-lg bg-amber-100`"
          >
             <slot />
          </div>

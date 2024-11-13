@@ -34,7 +34,7 @@ const handleShowHide = (active: boolean) => {
             />
          </div>
 
-         <p class="text-sm font-medium line-clamp-1">
+         <p class="line-clamp-1">
             {{ store.currentSong?.singer || "..." }}
          </p>
       </div>
@@ -42,11 +42,11 @@ const handleShowHide = (active: boolean) => {
       <div
          :class="`lyric-container h-[30vh] ${handleShowHide(
             tab === 'lyric'
-         )}  overflow-auto text-center relative [&>*]:mt-3 [&>*:last-child]:mb-[15vh] text-amber-100 font-[700] text-2xl no-scrollbar mask-vertical`"
+         )}  overflow-auto text-center relative [&>*]:mt-4 [&>*:last-child]:mb-[15vh] text-amber-100 font-[700] text-2xl no-scrollbar mask-vertical`"
       >
          <SongLyricWrapper />
       </div>
-      <p v-if="tab === 'lyric'" class="mt-2 text-amber-100/60 text-center">
+      <p v-if="tab === 'lyric'" class="text-sm mt-2 text-amber-100/60 text-center whitespace-nowrap text-ellipsis overflow-hidden">
          {{ store.currentSong?.name || "..." }} -
          {{ store.currentSong?.singer || "..." }}
       </p>

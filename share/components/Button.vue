@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { ArrowPathIcon } from "@heroicons/vue/24/outline";
 import { cva, type VariantProps } from "class-variance-authority";
-import type { TypeResolveContext } from "vue/compiler-sfc";
 
 const classes = {
    active: "before:shadow-none font-[500] translate-y-[2px] text-[#cd1818]",
-   button: "inline-flex relative items-center justify-center z-0",
+   button: "inline-flex relative items-center justify-center z-0 hover:brightness-90",
 };
 
 const ButtonVariant = cva(classes.button, {

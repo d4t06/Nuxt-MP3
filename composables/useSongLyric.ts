@@ -11,13 +11,13 @@ export default function useSongLyric({ lyrics }: Props) {
    const { audioEle, tab } = storeToRefs(store);
 
    const currentLyricIndex = ref(0);
-   const lyricRefs = ref<HTMLCollection>();
+   let lyricElements: HTMLCollection | null = null;
 
    let currentTime = 0;
    let scrollBehavior: ScrollBehavior = "smooth";
 
    const handleTimeUpdate = () => {
-      if (!audioEle.value || !lyricRefs.value) return;
+      if (!audioEle.value || !lyricElements) return;
 
       const direction = audioEle.value.currentTime > currentTime ? "forward" : "backward";
 
@@ -55,10 +55,8 @@ export default function useSongLyric({ lyrics }: Props) {
          currentLyricIndex.value = nextIndex;
          currentLyricIndex.value = nextIndex;
 
-         if (lyricRefs.value[nextIndex]) {
-            console.log(lyricRefs.value.length);
-
-            lyricRefs.value[nextIndex].scrollIntoView({
+         if (lyricElements[nextIndex]) {
+            lyricElements[nextIndex].scrollIntoView({
                behavior: scrollBehavior,
                block: "center",
             });
@@ -84,12 +82,12 @@ export default function useSongLyric({ lyrics }: Props) {
          if (!lyrics.value.length) return;
 
          const lyricContainer = document.querySelector(".lyric-container");
-         if (lyricContainer) lyricRefs.value = lyricContainer.children;
+         if (lyricContainer) lyricElements = lyricContainer.children;
       },
       {
          flush: "post",
       }
    );
 
-   return { currentLyricIndex, lyricRefs };
+   return { currentLyricIndex };
 }

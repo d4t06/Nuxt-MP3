@@ -9,9 +9,9 @@ export default function useGetSongLyric() {
    const isFetching = ref(false);
    const lyrics = ref<Lyric[]>([]);
 
-   const ranGetLyric = ref(false);
-   const timeOutId = ref<NodeJS.Timeout>();
-   const isSongLoaded = ref(false);
+   let ranGetLyric = false;
+   let timeOutId: NodeJS.Timeout | null = null;
+   let isSongLoaded = false;
 
    const getLyrics = async () => {
       try {
@@ -35,14 +35,14 @@ export default function useGetSongLyric() {
    };
 
    const resetForNewSong = () => {
-      clearTimeout(timeOutId.value);
+      if (timeOutId) clearTimeout(timeOutId);
       isFetching.value = true;
       lyrics.value = [];
-      ranGetLyric.value = false;
+      ranGetLyric = false;
    };
 
    const handleSongLoaded = () => {
-      isSongLoaded.value = true;
+      isSongLoaded = true;
    };
 
    watchEffect(() => {
@@ -65,10 +65,10 @@ export default function useGetSongLyric() {
          //    });
          // }
 
-         if (!lyrics.value.length && !ranGetLyric.value) {
-            ranGetLyric.value = true;
+         if (!lyrics.value.length && !ranGetLyric) {
+            ranGetLyric = true;
 
-            timeOutId.value = setTimeout(getLyrics, 500);
+            timeOutId = setTimeout(getLyrics, 1000);
          }
       }
    });
