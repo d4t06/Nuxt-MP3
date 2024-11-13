@@ -26,3 +26,9 @@ type SongLyric = {
 };
 
 type LyricStatus = "active" | "done" | "coming";
+
+type Toast = {
+   variant: "success" | "error";
+   desc: string;
+   id: string;
+};

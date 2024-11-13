@@ -1,6 +1,9 @@
 export default function useSongItemAction() {
+   const { token } = useAuth();
+
+   const toastStore = useToastStore();
+
    const isFetching = ref(false);
-   const { token, status } = useAuth();
 
    const config = useRuntimeConfig();
 
@@ -34,10 +37,13 @@ export default function useSongItemAction() {
                   body: JSON.stringify(props.song),
                   headers,
                });
+
+               toastStore.setSuccessToast("Edit song successful");
                break;
          }
       } catch (error: any) {
          console.log({ message: error });
+         toastStore.setErrorToast();
       } finally {
          isFetching.value = false;
       }

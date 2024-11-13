@@ -29,7 +29,7 @@ const ableToSubmit = computed(
 
 <template>
    <div
-      :class="`w-[600px] max-w-[calc(90vw-40px)]
+      :class="`w-[600px] max-w-[calc(90vw-40px)] text-amber-800
          ${loading ? 'opacity-60 pointer-events-none' : ''}`"
    >
       <h1 class="text-xl font-medium">Edit {{ props.song.name }}</h1>

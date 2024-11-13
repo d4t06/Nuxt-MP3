@@ -7,10 +7,8 @@ interface TokensByUser {
  * Tokens storage.
  * You will need to implement your own, connect with DB/etc.
  */
-export const tokensByUser: TokensByUser = {
-   refresh_token: "",
-   token: "",
-};
+
+const CLIENT_TOKEN_EXPIRE = 60 * 60; //1h
 
 export default eventHandler(async (event) => {
    const body = (await readBody(event)) as { password: string };
@@ -36,9 +34,6 @@ export default eventHandler(async (event) => {
    const {
       data: { refresh_token, token },
    } = payload;
-
-   tokensByUser.refresh_token = refresh_token;
-   tokensByUser.token = token;
 
    return {
       token: token,

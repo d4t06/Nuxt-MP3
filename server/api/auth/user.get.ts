@@ -1,7 +1,12 @@
-import { extractToken, tokensByUser } from "./login.post";
+import { extractToken } from "./login.post";
+import { decode } from "jsonwebtoken";
 
 export default eventHandler(async (event) => {
    const authorizationHeader = getRequestHeader(event, "Authorization");
+
+
+
+
 
    if (typeof authorizationHeader === "undefined") {
       throw createError({
@@ -13,15 +18,10 @@ export default eventHandler(async (event) => {
 
    const extractedToken = extractToken(authorizationHeader);
 
-   if (tokensByUser.token !== extractedToken) {
-      throw createError({
-         statusCode: 401,
-         statusMessage: "Unauthorized, user is not logged in",
-      });
-   }
+   console.log(decode(extractedToken));
 
    return {
-      token: tokensByUser.token,
+      token: extractedToken,
       username: "admin",
    };
 });

@@ -15,11 +15,13 @@
       "@pinia/nuxt": "^0.7.0",
       "@sidebase/nuxt-auth": "^0.9.4",
       "class-variance-authority": "^0.7.0",
+      "jsonwebtoken": "^9.0.2",
       "nuxt": "^3.14.159",
       "vue": "latest",
       "vue-router": "latest"
    },
    "devDependencies": {
+      "@types/jsonwebtoken": "^9.0.7",
       "autoprefixer": "^10.4.20",
       "postcss": "^8.4.48",
       "tailwindcss": "^3.4.14"

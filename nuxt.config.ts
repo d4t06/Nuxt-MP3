@@ -31,6 +31,7 @@ export default defineNuxtConfig({
    },
    auth: {
       isEnabled: true,
+
       provider: {
          type: "local",
          endpoints: {
@@ -40,8 +41,11 @@ export default defineNuxtConfig({
             login: "/login",
          },
          token: {
-            maxAgeInSeconds: 1800, //default
+            maxAgeInSeconds: 1800, //default 1800
          },
+      },
+      sessionRefresh: {
+         enableOnWindowFocus: true,
       },
    },
 });
