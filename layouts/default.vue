@@ -1,7 +1,9 @@
-<script setup></script>
+<script setup>
+import bgImage from '../public/bg-image.png'
+</script>
 
 <template>
-   <div class="fixed flex justify-center items-center inset-alternate bg-[#fdf6e3] text-amber-800">
+   <div :style="{backgroundImage: `url(${bgImage})`}" class="fixed flex justify-center items-center inset-alternate bg-[#fdf6e3] text-amber-800">
       <slot />
    </div>
 

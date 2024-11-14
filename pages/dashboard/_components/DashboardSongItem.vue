@@ -15,6 +15,6 @@ const props = defineProps<Props>();
          <h5 class="overflow-ellipsis">{{props.song.name}}</h5>
          <p class="text-sm">{{props.song.singer}}</p>
       </div>
-      <DashboardSongItemCta :song="props.song" />
+      <!-- <DashboardSongItemCta :song="props.song" /> -->
    </div>
 </template>

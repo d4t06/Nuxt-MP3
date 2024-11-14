@@ -4,8 +4,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { ref } from "vue";
 
 const classes = {
-   active: "before:shadow-none font-[500] translate-y-[2px] text-[#cd1818]",
-   button: "inline-flex relative items-center justify-center z-0 hover:brightness-90",
+   active: "before:shadow-none translate-y-[2px]",
+   button: "inline-flex relative items-center justify-center z-0",
 };
 
 const ButtonVariant = cva(classes.button, {
@@ -24,7 +24,7 @@ const ButtonVariant = cva(classes.button, {
          primary:
             "text-amber-100 before:bg-amber-800 before:border-[#78350f] before:shadow-[0_2px_0_#78350f]",
          second:
-            "text-amber-800 before:bg-amber-100 before:border-[#78350f] before:shadow-[0_2px_0_#78350f]",
+            "text-amber-800 before:bg-[#fdf6e3] before:border-[#78350f] before:shadow-[0_2px_0_#78350f]",
          clear: "",
       },
    },

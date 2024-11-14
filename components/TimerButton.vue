@@ -14,7 +14,7 @@ const props = defineProps<Props>();
 
 const modalRef = ref<typeof Modal & ModalRef>();
 
-const { isActive, countDown, clearTimer } = useTimer({ isPlaying: props.isPlaying });
+const { isActive, countDown, clearTimer, currentIndex } = useTimer({ isPlaying: props.isPlaying });
 
 const handleButtonClick = () => {
    if (!isActive.value) return modalRef.value?.open();
@@ -34,6 +34,7 @@ const classes = {
 <template>
    <Button
       :on-click="handleButtonClick"
+      :disabled="currentIndex === null"
       size="clear"
       colors="second"
       class="group h-full w-10"
@@ -49,7 +50,7 @@ const classes = {
 
    <Modal ref="modalRef">
       <div
-         class="w-[300px] max-w-[calc(100vw-40px)] bg-amber-100 text-amber-800 rounded-lg"
+         class="w-[300px] max-w-[calc(100vw-40px)] text-amber-800 rounded-lg"
       >
          <h1 class="text-xl mb-3">Sleep timer</h1>
          <div>
@@ -58,6 +59,7 @@ const classes = {
                   v-for="item in COUNT_LIST"
                   :on-click="() => handleSetTimer(item)"
                   :class="classes.timerButton"
+                  colors="second"
                >
                   {{ item }} songs
                </Button>

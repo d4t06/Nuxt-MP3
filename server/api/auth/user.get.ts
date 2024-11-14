@@ -1,27 +1,27 @@
-import { extractToken } from "./login.post";
-import { decode } from "jsonwebtoken";
+import { extractToken, JwtPayload } from "./login.post";
+import jwt from "jsonwebtoken";
 
 export default eventHandler(async (event) => {
    const authorizationHeader = getRequestHeader(event, "Authorization");
 
-
-
-
-
    if (typeof authorizationHeader === "undefined") {
       throw createError({
          statusCode: 403,
-         statusMessage:
-            "Need to pass valid Bearer-authorization header to access this endpoint",
+         statusMessage: "Authorization header no provided",
       });
    }
 
    const extractedToken = extractToken(authorizationHeader);
+   const payload = jwt.verify(extractedToken, process.env.NUXTAUTH_SECRET!) as JwtPayload;
 
-   console.log(decode(extractedToken));
+   if (payload.tokenExpired < Date.now()) {
+      console.error(">>> token expired");
 
-   return {
-      token: extractedToken,
-      username: "admin",
-   };
+      throw createError({
+         statusCode: 401,
+         statusMessage: "Token is expired",
+      });
+   }
+
+   return { token: payload.token };
 });

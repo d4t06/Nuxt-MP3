@@ -1,13 +1,14 @@
 import { onWatcherCleanup } from "vue";
+import { API_ENDPOINT } from "~/share/libs/appHelper";
 
 export default function useGetSongLyric() {
    const store = usePlayerStore();
    const { audioEle, currentSong, tab } = storeToRefs(store);
 
-   const config = useRuntimeConfig();
-
    const isFetching = ref(false);
    const lyrics = ref<Lyric[]>([]);
+
+   
 
    let ranGetLyric = false;
    let timeOutId: NodeJS.Timeout | null = null;
@@ -20,7 +21,7 @@ export default function useGetSongLyric() {
          isFetching.value = true;
 
          const { data } = await useFetch<{ data: { lyrics: string } }>(
-            `${config.public.apiBase}/song-lyrics?song_id=${currentSong.value.id}`
+            `${API_ENDPOINT}/song-lyrics?song_id=${currentSong.value.id}`
          );
 
          if (data) {
@@ -68,7 +69,7 @@ export default function useGetSongLyric() {
          if (!lyrics.value.length && !ranGetLyric) {
             ranGetLyric = true;
 
-            timeOutId = setTimeout(getLyrics, 1000);
+            timeOutId = setTimeout(getLyrics, 500);
          }
       }
    });

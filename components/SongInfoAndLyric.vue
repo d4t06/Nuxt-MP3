@@ -34,7 +34,7 @@ const handleShowHide = (active: boolean) => {
             />
          </div>
 
-         <p class="line-clamp-1">
+         <p class="line-clamp-1 text-sm">
             {{ store.currentSong?.singer || "..." }}
          </p>
       </div>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import Player from "~/components/Player.vue";
+import { API_ENDPOINT } from "~/share/libs/appHelper";
 
 import { usePlayerStore } from "~/stores/player";
 
 const store = usePlayerStore();
 const { audioEle } = storeToRefs(store);
 
-const runtimeConfig = useRuntimeConfig();
 
 const { data } = await useFetch<{ data: { songs: Song[] } }>(
-   `${runtimeConfig.public.apiBase}/songs`
+   `${API_ENDPOINT}/songs`
 );
 
 if (data.value?.data.songs) {

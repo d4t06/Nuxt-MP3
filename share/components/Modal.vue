@@ -54,7 +54,7 @@ const classes = {
          <div
             :class="`${
                props.childClassName || ' py-3 px-4'
-            } rounded-lg bg-amber-100`"
+            } rounded-lg bg-[#fdf6e3]`"
          >
             <slot />
          </div>

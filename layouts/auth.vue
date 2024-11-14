@@ -1,10 +1,12 @@
 <script setup>
 import { HomeIcon } from "@heroicons/vue/24/outline";
 import Button from "~/share/components/Button.vue";
+import bgImage from "../public/bg-image.png";
 </script>
 
 <template>
    <div
+      :style="{ backgroundImage: `url(${bgImage})` }"
       class="fixed flex justify-center items-center inset-alternate bg-[#fdf6e3] text-amber-800"
    >
       <slot />

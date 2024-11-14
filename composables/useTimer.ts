@@ -8,7 +8,7 @@ type Props = {
 export default function useTimer({ isPlaying }: Props) {
    const store = usePlayerStore();
 
-   const { audioEle } = storeToRefs(store);
+   const { audioEle, currentIndex } = storeToRefs(store);
 
    // store user timer, decide add song event or not
    const isActive = ref(0);
@@ -71,5 +71,5 @@ export default function useTimer({ isPlaying }: Props) {
       }
    });
 
-   return { countDown, clearTimer, isActive };
+   return { countDown, clearTimer, isActive, currentIndex };
 }

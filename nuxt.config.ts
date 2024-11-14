@@ -26,7 +26,8 @@ export default defineNuxtConfig({
    },
    runtimeConfig: {
       public: {
-         apiBase: process.env.NUXT_PUBLIC_API_BASE || "https://nest-mp3.vercel.app/api",
+         apiBase:
+            process.env.NUXT_PUBLIC_API_ENDPOINT || "https://nest-mp3.vercel.app/api",
       },
    },
    auth: {
@@ -41,11 +42,21 @@ export default defineNuxtConfig({
             login: "/login",
          },
          token: {
-            maxAgeInSeconds: 1800, //default 1800
+            /** default: /token
+             * response from login post look like {token: ''}
+             */
+            signInResponseTokenPointer: "/token",
          },
-      },
-      sessionRefresh: {
-         enableOnWindowFocus: true,
+         // refresh: {
+         //    isEnabled: true,
+         //    endpoint: { path: "/refresh", method: "post" },
+         // },
+         session: {
+            dataType: {
+               token: "string",
+               tokeExpired: "number",
+            },
+         },
       },
    },
 });

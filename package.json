@@ -27,6 +27,7 @@
       "tailwindcss": "^3.4.14"
    },
    "overrides": {
-      "vue": "latest"
+      "vue": "latest",
+      "nitropack": "2.9.7"
    }
 }

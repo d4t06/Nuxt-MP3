@@ -1,19 +1,22 @@
-interface TokensByUser {
-   token: string;
-   refresh_token: string;
-}
-
 /**
  * Tokens storage.
  * You will need to implement your own, connect with DB/etc.
  */
 
-const CLIENT_TOKEN_EXPIRE = 60 * 60; //1h
+import { API_ENDPOINT } from "~/share/libs/appHelper";
+
+import jwt from "jsonwebtoken";
+import { AUTH_TOKEN_EXPIRE, CLIENT_TOKEN_EXPIRE } from "~/constants";
+
+export type JwtPayload = {
+   token: string;
+   tokenExpired: number;
+};
 
 export default eventHandler(async (event) => {
    const body = (await readBody(event)) as { password: string };
 
-   const res = await fetch(`${process.env.NUXT_PUBLIC_API_BASE}/auth/login`, {
+   const res = await fetch(`${API_ENDPOINT}/auth/login`, {
       method: "POST",
       body: JSON.stringify({ password: body.password }),
       headers: {
@@ -22,7 +25,7 @@ export default eventHandler(async (event) => {
    });
 
    const payload = (await res.json()) as {
-      data: { token: string; refresh_token: string };
+      data: JwtPayload;
    };
 
    if (!res.ok)
@@ -32,12 +35,21 @@ export default eventHandler(async (event) => {
       });
 
    const {
-      data: { refresh_token, token },
+      data: { token },
    } = payload;
 
-   return {
-      token: token,
-   };
+   const nextAuthToken = jwt.sign(
+      {
+         token,
+         tokenExpired: Date.now() + CLIENT_TOKEN_EXPIRE * 1000,
+      } as JwtPayload,
+      process.env.NUXTAUTH_SECRET!,
+      {
+         expiresIn: AUTH_TOKEN_EXPIRE,
+      }
+   );
+
+   return { token: nextAuthToken };
 });
 
 export function extractToken(authorizationHeader: string) {

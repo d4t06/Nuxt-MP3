@@ -1,11 +1,11 @@
+import { API_ENDPOINT } from "~/share/libs/appHelper";
+
 export default function useSongItemAction() {
-   const { token } = useAuth();
+   const { token, data } = useAuth();
 
    const toastStore = useToastStore();
 
    const isFetching = ref(false);
-
-   const config = useRuntimeConfig();
 
    type Delete = {
       variant: "delete";
@@ -20,10 +20,10 @@ export default function useSongItemAction() {
 
    const action = async (props: Delete | Edit) => {
       try {
-         if (!token.value) throw new Error("");
+         if (!data.value?.token) throw new Error("");
 
          const headers = new Headers();
-         headers.set("Authorization", token.value);
+         headers.set("Authorization", token.value!);
 
          isFetching.value = true;
 
@@ -32,7 +32,7 @@ export default function useSongItemAction() {
                break;
 
             case "edit":
-               await useFetch(`${config.public.apiBase}/songs/${props.id}`, {
+               await useFetch(`${API_ENDPOINT}/songs/${props.id}`, {
                   method: "PUT",
                   body: JSON.stringify(props.song),
                   headers,

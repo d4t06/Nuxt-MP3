@@ -14,9 +14,12 @@ const songs = await getAllSongs();
 </script>
 
 <template>
-   <Center v-if="!songs">Something went wrong...</Center>
+   <p v-if="!songs">Something went wrong...</p>
 
-   <div v-else class="fixed top-0 z-[9] w-full bg-[#fdf6e3]">
+
+   <!-- <p v-else>sdf</p> -->
+
+   <!-- <div v-else class="fixed top-0 z-[9] w-full bg-[#fdf6e3]">
       <div class="container md:max-w-[800px] mt-5">
          <div class="flex justify-between items-center">
             <div class="text-xl text-amber-900 font-semibold">Songs</div>
@@ -36,7 +39,8 @@ const songs = await getAllSongs();
       </div>
    </div>
 
-   <div class="container md:max-w-[800px] pt-[90px]">
+   <div class="container md:max-w-[800px] pt-[90px] pb-[80px]">
       <DashboardSongItem v-for="s in songs" :song="s" />
-   </div>
+
+   </div> -->
 </template>
