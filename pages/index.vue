@@ -8,8 +8,10 @@ const { audioEle } = storeToRefs(store);
 
 const runtimeConfig = useRuntimeConfig();
 
+console.log(runtimeConfig.public.apiBase);
+
 const { data } = await useFetch<{ data: { songs: Song[] } }>(
-   `${runtimeConfig.public.apiBase}/songs`
+   `${runtimeConfig.public.apiBase}/songs`,
 );
 
 if (data.value?.data.songs) {

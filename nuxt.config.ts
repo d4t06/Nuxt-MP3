@@ -26,12 +26,11 @@ export default defineNuxtConfig({
    },
    runtimeConfig: {
       public: {
-         apiBase: process.env.NUXT_PUBLIC_API_BASE || "https://nest-mp3.vercel.app/api",
+         apiBase: process.env.NUXT_PUBLIC_API_BASE,
       },
    },
    auth: {
       isEnabled: true,
-      // baseURL: "https://nest-mp3.vercel.app/api/",
       provider: {
          type: "local",
          endpoints: {

@@ -58,12 +58,10 @@ export default function useVolume() {
    watch(
       [() => 0],
       () => {
-         console.log(volumeLineRef.value, volumeHolderRef.value);
-
          const localVolume = getLocalStorage()["volume"];
          volume.value = !localVolume || isNaN(+localVolume) ? 1 : +localVolume;
       },
-      { immediate: true }
+      { immediate: true },
    );
 
    watch([isMute], () => {
