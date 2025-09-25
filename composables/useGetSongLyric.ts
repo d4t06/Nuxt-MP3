@@ -4,27 +4,27 @@ export default function useGetSongLyric() {
    const store = usePlayerStore();
    const { audioEle, currentSong, tab } = storeToRefs(store);
 
-   const config = useRuntimeConfig();
+   // const config = useRuntimeConfig();
 
    const isFetching = ref(false);
    const lyrics = ref<Lyric[]>([]);
 
    let ranGetLyric = false;
    let timeOutId: NodeJS.Timeout | null = null;
-   let isSongLoaded = false;
+   let isSongLoaded = ref(false);
 
    const getLyrics = async () => {
       try {
-         if (!currentSong.value) return;
+         if (!currentSong.value || !currentSong.value.lyric_id) return;
 
          isFetching.value = true;
 
-         const { data } = await useFetch<{ data: { lyrics: string } }>(
-            `${config.public.apiBase}/song-lyrics?song_id=${currentSong.value.id}`
+         const { data } = await useFetch<{   lyrics: string  }>(
+            `/api/lyric/${currentSong.value.lyric_id}`,
          );
 
          if (data) {
-            const parseLyrics = JSON.parse(data.value?.data?.lyrics || "[]") as Lyric[];
+            const parseLyrics = JSON.parse(data.value?.lyrics || "[]") as Lyric[];
             lyrics.value = parseLyrics;
          }
       } catch (error) {
@@ -39,10 +39,11 @@ export default function useGetSongLyric() {
       isFetching.value = true;
       lyrics.value = [];
       ranGetLyric = false;
+      isSongLoaded.value = false;
    };
 
    const handleSongLoaded = () => {
-      isSongLoaded = true;
+      isSongLoaded.value = true;
    };
 
    watchEffect(() => {
@@ -65,10 +66,10 @@ export default function useGetSongLyric() {
          //    });
          // }
 
-         if (!lyrics.value.length && !ranGetLyric) {
+         if (!lyrics.value.length && !ranGetLyric && isSongLoaded.value) {
             ranGetLyric = true;
 
-            timeOutId = setTimeout(getLyrics, 1000);
+            getLyrics();
          }
       }
    });
@@ -78,7 +79,7 @@ export default function useGetSongLyric() {
       () => {
          onWatcherCleanup(resetForNewSong);
       },
-      { immediate: true }
+      { immediate: true },
    );
 
    return { isFetching, lyrics };

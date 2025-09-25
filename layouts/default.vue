@@ -6,7 +6,7 @@
    </div>
 
    <div class="fixed text-sm left-8 bottom-2 text-amber-800">
-      Make with ❤️ by d4t06
+      Make with <img class="w-4 inline-block" src="/heart.png" /> by d4t06
    </div>
 
 

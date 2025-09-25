@@ -75,7 +75,12 @@ const {
    <template v-else>
       <button
          :disabled="loading || disabled"
-         @click="onClick"
+         @click="
+            ($event) => {
+               ($event.target as HTMLButtonElement)?.blur();
+               onClick && onClick();
+            }
+         "
          :class="`${ButtonVariant({
             variant,
             size,

@@ -8,7 +8,7 @@ const { songListRef } = useSongListEvent();
 </script>
 
 <template>
-   <div ref="songListRef" class="max-h-[40vh] overflow-auto no-scrollbar">
+   <div ref="songListRef" class="max-h-[60vh] overflow-auto no-scrollbar">
       <template v-if="store.songs.length">
          <SongListItem
             v-for="(s, i) in store.songs"

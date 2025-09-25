@@ -15,6 +15,7 @@ export default defineNuxtConfig({
    app: {
       head: {
          title: "Nuxt MP3",
+         link: [{rel:'icon', type: 'image/svg+xml', href:'./favicon.svg'}]
       },
    },
 

@@ -26,10 +26,18 @@ const getActiveClass = () => {
 </script>
 
 <template>
-   <div @click="handleSetSong" :class="`${classes.container} ${getActiveClass()}`">
-      <div class="">
-         <h5 class="">{{ props.song.name }}</h5>
-         <p class="text-sm">{{ props.song.singer }}</p>
+   <div
+      @click="handleSetSong"
+      :data-first_letter="props.song.first_letter"
+      :class="`${classes.container} ${getActiveClass()}`"
+   >
+      <div>
+         <h5>{{ props.song.name }}</h5>
+         <p class="text-sm opacity-80">
+            <span v-for="(singer, id) in props.song.singers"
+               >{{ id ? ", " : "" }}{{ singer.name }}</span
+            >
+         </p>
       </div>
       <span class="">{{ formatTime(props.song.duration) }}</span>
    </div>

@@ -1,4 +1,4 @@
-import { onWatcherCleanup, type Ref } from "@vue/reactivity";
+import { onWatcherCleanup } from "@vue/reactivity";
 
 export default function useSongListEvent() {
    const store = usePlayerStore();
@@ -11,6 +11,23 @@ export default function useSongListEvent() {
          behavior: "instant",
          block: "center",
       });
+   };
+
+   const handleKeyboardPress = (e: KeyboardEvent) => {
+      const isLetterOrNumber = /^[a-zA-Z0-9]$/;
+      if (isLetterOrNumber.test(e.key)) {
+         const firstElement = document.querySelector(
+            `div[data-first_letter=${
+               typeof e.key === "number" ? e.key : "'" + e.key + "'"
+            }]`,
+         );
+
+         if (firstElement)
+            firstElement.scrollIntoView({
+               block: "center",
+               behavior: "instant",
+            });
+      }
    };
 
    const handleWindowClick: EventListener = (e) => {
@@ -39,6 +56,15 @@ export default function useSongListEvent() {
 
       onWatcherCleanup(() => {
          window.removeEventListener("click", handleWindowClick);
+      });
+   });
+
+   watchEffect(() => {
+      if (!store.songs.length) return;
+      window.addEventListener("keypress", handleKeyboardPress);
+
+      onWatcherCleanup(() => {
+         window.removeEventListener("keypress", handleKeyboardPress);
       });
    });
 

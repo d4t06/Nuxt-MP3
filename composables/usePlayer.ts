@@ -7,7 +7,7 @@ type Props = {
    audioEle: HTMLAudioElement;
 };
 
-export default function usePlayer({ audioEle }: Props) {
+export default function usePlayerEffect({ audioEle }: Props) {
    const store = usePlayerStore();
 
    const { currentIndex, currentSong, songs } = storeToRefs(store);
@@ -155,6 +155,10 @@ export default function usePlayer({ audioEle }: Props) {
       play();
    };
 
+   const handleKeyboardPress = (e: KeyboardEvent) => {
+      if (e.key === " ") handlePlayPause();
+   };
+
    // get  localStorage
    watch(
       [songs],
@@ -167,7 +171,7 @@ export default function usePlayer({ audioEle }: Props) {
             if (index !== -1) store.currentIndex = index;
          } else firstTimeSongLoaded.value = false;
       },
-      { immediate: true }
+      { immediate: true },
    );
 
    // add events listener
@@ -194,8 +198,17 @@ export default function usePlayer({ audioEle }: Props) {
             firstTimeSongLoaded.value = false;
          });
       },
-      { immediate: true }
+      { immediate: true },
    );
+
+   watchEffect(() => {
+      if (!store.songs.length) return;
+      window.addEventListener("keypress", handleKeyboardPress);
+
+      onWatcherCleanup(() => {
+         window.removeEventListener("keypress", handleKeyboardPress);
+      });
+   });
 
    return {
       handleSeek,

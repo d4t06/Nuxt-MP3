@@ -10,7 +10,7 @@ import {
    PlayIcon,
    QueueListIcon,
 } from "@heroicons/vue/24/outline";
-import usePlayer from "~/composables/usePlayer";
+import usePlayerEffect from "~/composables/usePlayer";
 import { chekcDisable } from "~/share/libs/appHelper";
 import SongInfoAndLyric from "./SongInfoAndLyric.vue";
 
@@ -26,7 +26,7 @@ const {
    currentTimeTextRef,
    processLineHolderRef,
    processLineRef,
-} = usePlayer({ audioEle: audioEle.value! });
+} = usePlayerEffect({ audioEle: audioEle.value! });
 
 const toggleTab = () => {
    tab.value === "playing" ? (store.tab = "queue") : (store.tab = "playing");
@@ -73,7 +73,7 @@ const classes = {
 
             <div
                :class="`flex my-2 justify-center items-center space-x-3 ${chekcDisable(
-                  !songs.length
+                  !songs.length,
                )}`"
             >
                <Button :onClick="handlePrevious">
@@ -86,7 +86,7 @@ const classes = {
                   <ArrowPathIcon
                      v-else-if="status === 'waiting'"
                      class="w-10 animate-spin"
-                  /> 
+                  />
                </Button>
 
                <Button class-name="text-amber-100" :onClick="handleNext">

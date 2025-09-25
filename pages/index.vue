@@ -6,17 +6,17 @@ import { usePlayerStore } from "~/stores/player";
 const store = usePlayerStore();
 const { audioEle } = storeToRefs(store);
 
-const runtimeConfig = useRuntimeConfig();
+const { data } = await useFetch<Song[]>(`/api/song`, { key: "songs" });
 
-console.log(runtimeConfig.public.apiBase);
-
-const { data } = await useFetch<{ data: { songs: Song[] } }>(
-   `${runtimeConfig.public.apiBase}/songs`,
-);
-
-if (data.value?.data.songs) {
-   store.songs = data.value?.data.songs;
+if (data.value?.length) {
+   store.songs = data.value;
 }
+
+// const getSongs = useGetSongs();
+
+// watchEffect(() => {
+//    getSongs();
+// });
 </script>
 
 <template>

@@ -17,7 +17,7 @@ const handleShowHide = (active: boolean) => {
    >
       <div
          :class="`${handleShowHide(
-            tab === 'playing'
+            tab === 'playing',
          )} relative cursor-pointer text-center text-amber-100 `"
       >
          <p class="flex">
@@ -35,20 +35,27 @@ const handleShowHide = (active: boolean) => {
          </div>
 
          <p class="line-clamp-1">
-            {{ store.currentSong?.singer || "..." }}
+            <span v-for="(singer, id) in store.currentSong?.singers"
+               >{{ id ? ", " : "" }}{{ singer.name }}</span
+            >
          </p>
       </div>
 
       <div
          :class="`lyric-container h-[30vh] ${handleShowHide(
-            tab === 'lyric'
+            tab === 'lyric',
          )}  overflow-auto text-center relative [&>*]:mt-4 [&>*:last-child]:mb-[15vh] text-amber-100 font-[700] text-2xl no-scrollbar mask-vertical`"
       >
          <SongLyricWrapper />
       </div>
-      <p v-if="tab === 'lyric'" class="text-sm mt-2 text-amber-100/60 text-center whitespace-nowrap text-ellipsis overflow-hidden">
+      <p
+         v-if="tab === 'lyric'"
+         class="text-sm mt-2 text-amber-100/60 text-center whitespace-nowrap text-ellipsis overflow-hidden"
+      >
          {{ store.currentSong?.name || "..." }} -
-         {{ store.currentSong?.singer || "..." }}
+         <span v-for="(singer, id) in store.currentSong?.singers"
+            >{{ id ? ", " : "" }}{{ singer.name }}</span
+         >
       </p>
    </div>
 </template>
