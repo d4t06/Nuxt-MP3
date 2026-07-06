@@ -15,7 +15,7 @@ export default defineNuxtConfig({
    app: {
       head: {
          title: "Nuxt MP3",
-         link: [{rel:'icon', type: 'image/svg+xml', href:'./favicon.svg'}]
+         link: [{ rel: "icon", type: "image/svg+xml", href: "./favicon.svg" }],
       },
    },
 
@@ -27,11 +27,11 @@ export default defineNuxtConfig({
    },
    runtimeConfig: {
       public: {
-         apiBase: process.env.NUXT_PUBLIC_API_BASE,
+         apiBase: "",
       },
    },
    auth: {
-      isEnabled: true,
+      isEnabled: false,
       provider: {
          type: "local",
          endpoints: {

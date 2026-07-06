@@ -1,6 +1,6 @@
-import { FieldPath } from "firebase-admin/firestore";
+// import { FieldPath } from "firebase-admin/firestore";
 import { defineEventHandler } from "h3";
-import { db } from "../firebase";
+// import { db } from "../firebase";
 
 function mergeSortedArrays(arr1: Song[], arr2: Song[]) {
    let mergedArray = [];
@@ -41,54 +41,55 @@ function sortMultiSongLists(arrays: Song[][]) {
    return mergedResult;
 }
 
-export default defineEventHandler(async () => {
-   // const db = getFirestore();
+defineEventHandler(async () => {
 
-   const playlistSnap = await db
-      .collection("Playlists")
-      .doc("rNSgjVwKRlQIR2O2qZ45")
-      .get();
+   // const playlistSnap = await db
+   //    .collection("Playlists")
+   //    .doc("rNSgjVwKRlQIR2O2qZ45")
+   //    .get();
 
-   if (playlistSnap.exists) {
-      type Playlist = {
-         song_ids: string[];
-      };
+   // if (playlistSnap.exists) {
+   //    type Playlist = {
+   //       song_ids: string[];
+   //    };
 
-      const playlist = playlistSnap.data() as Playlist;
+   //    const playlist = playlistSnap.data() as Playlist;
 
-      if (!playlist.song_ids) return [];
+   //    if (!playlist.song_ids) return [];
 
-      const chunkSize = 20;
-      const chunks: string[][] = [];
-      for (let i = 0; i < playlist.song_ids.length; i += chunkSize) {
-         chunks.push(playlist.song_ids.slice(i, i + chunkSize));
-      }
+   //    const chunkSize = 20;
+   //    const chunks: string[][] = [];
+   //    for (let i = 0; i < playlist.song_ids.length; i += chunkSize) {
+   //       chunks.push(playlist.song_ids.slice(i, i + chunkSize));
+   //    }
 
-      const playlistSongs: Song[][] = [];
+   //    const playlistSongs: Song[][] = [];
 
-      for (const chunk of chunks) {
-         if (chunk.length > 0) {
-            const songsSnap = await db
-               .collection("Songs")
-               .where(FieldPath.documentId(), "in", chunk)
-               .orderBy("first_letter")
-               .get();
+   //    for (const chunk of chunks) {
+   //       if (chunk.length > 0) {
+   //          const songsSnap = await db
+   //             .collection("Songs")
+   //             .where(FieldPath.documentId(), "in", chunk)
+   //             .orderBy("first_letter")
+   //             .get();
 
-            if (!!songsSnap.docs.length) {
-               const result = songsSnap.docs.map((doc) => {
-                  const song = { ...doc.data(), id: doc.id } as Song;
-                  return song;
-               });
+   //          if (!!songsSnap.docs.length) {
+   //             const result = songsSnap.docs.map((doc) => {
+   //                const song = { ...doc.data(), id: doc.id } as Song;
+   //                return song;
+   //             });
 
-               playlistSongs.push(result);
-            }
-         }
-      }
+   //             playlistSongs.push(result);
+   //          }
+   //       }
+   //    }
 
-      if (playlistSongs.length === 1) return playlistSongs[0];
+   //    if (playlistSongs.length === 1) return playlistSongs[0];
 
-      return sortMultiSongLists(playlistSongs);
-   }
+   //    return sortMultiSongLists(playlistSongs);
+   // }
 
    return [];
 });
+
+export default defineEventHandler;

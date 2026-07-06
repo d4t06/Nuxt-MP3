@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import Player from "~/components/Player.vue";
+import { useAPI } from "~/composables/useAPI";
 
 import { usePlayerStore } from "~/stores/player";
 
 const store = usePlayerStore();
 const { audioEle } = storeToRefs(store);
+const { data } = await useAPI<{ data: Song[] }>("/songs");
 
-const { data } = await useFetch<Song[]>(`/api/song`, { key: "songs" });
-
-if (data.value?.length) {
-   store.songs = data.value;
+if (data.value?.data.length) {
+   store.songs = data.value.data;
 }
-
-// const getSongs = useGetSongs();
-
-// watchEffect(() => {
-//    getSongs();
-// });
 </script>
 
 <template>

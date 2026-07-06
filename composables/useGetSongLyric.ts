@@ -1,10 +1,12 @@
 import { onWatcherCleanup } from "vue";
+// import { useAPI } from "./useAPI";
 
 export default function useGetSongLyric() {
+   const { $api } = useNuxtApp();
    const store = usePlayerStore();
    const { audioEle, currentSong, tab } = storeToRefs(store);
 
-   // const config = useRuntimeConfig();
+   const config = useRuntimeConfig();
 
    const isFetching = ref(false);
    const lyrics = ref<Lyric[]>([]);
@@ -19,12 +21,15 @@ export default function useGetSongLyric() {
 
          isFetching.value = true;
 
-         const { data } = await useFetch<{   lyrics: string  }>(
-            `/api/lyric/${currentSong.value.lyric_id}`,
+         const { data } = await $api<{ data: { lyrics: string } }>(
+            `/lyrics/${currentSong.value.lyric_id}`,
+            {
+               baseURL: config.public.apiBase,
+            },
          );
 
          if (data) {
-            const parseLyrics = JSON.parse(data.value?.lyrics || "[]") as Lyric[];
+            const parseLyrics = JSON.parse(data.lyrics || "[]") as Lyric[];
             lyrics.value = parseLyrics;
          }
       } catch (error) {
