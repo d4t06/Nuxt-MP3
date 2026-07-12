@@ -6,8 +6,6 @@ export default function useGetSongLyric() {
    const store = usePlayerStore();
    const { audioEle, currentSong, tab } = storeToRefs(store);
 
-   const config = useRuntimeConfig();
-
    const isFetching = ref(false);
    const lyrics = ref<Lyric[]>([]);
 
@@ -23,9 +21,6 @@ export default function useGetSongLyric() {
 
          const { data } = await $api<{ data: { lyrics: string } }>(
             `/lyrics/${currentSong.value.lyric_id}`,
-            {
-               baseURL: config.public.apiBase,
-            },
          );
 
          if (data) {

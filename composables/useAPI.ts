@@ -7,12 +7,9 @@ import type { UseFetchOptions } from "#app";
 
 export function useAPI<T>(url: string, options?: UseFetchOptions<T>) {
 
-	const config = useRuntimeConfig()
-
 	return useFetch(url, {
 		...options,
 		$fetch: useNuxtApp().$api as typeof $fetch,
-		baseURL: config.public.apiBase
 	});
 }
 

@@ -1,7 +1,11 @@
 export default defineNuxtPlugin(() => {
+
+   const config = useRuntimeConfig()
+
    const api = $fetch.create({
-      baseURL: "https://api.nuxt.com",
+      baseURL: config.public.apiBase,
       onRequest() {
+         console.log("onRequest")
          // if (session.value?.token) {
          //   // note that this relies on ofetch >= 1.4.0 - you may need to refresh your lockfile
          //   options.headers.set('Authorization', `Bearer ${session.value?.token}`)
