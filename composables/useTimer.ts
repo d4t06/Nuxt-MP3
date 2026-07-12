@@ -39,11 +39,11 @@ export default function useTimer({ isPlaying }: Props) {
 
    // load localStorage
    watchEffect(() => {
-      console.log("init");
+      // console.log("init");
 
       const timer = getLocalStorage()["timer"] || 0;
       isActive.value = timer;
-      isActive.value = timer;
+      // isActive.value = timer;
    });
 
    // add audio event

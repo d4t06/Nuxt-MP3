@@ -96,7 +96,9 @@ const classes = {
          </div>
 
          <div :class="handleShowHide(tab === 'queue')">
-            <SongList />
+            <ClientOnly>
+               <SongList />
+            </ClientOnly>
          </div>
       </div>
    </div>

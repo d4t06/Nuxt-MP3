@@ -9,13 +9,14 @@ const store = usePlayerStore();
 const { audioEle } = storeToRefs(store);
 
 const cacheDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
-const STORAGE_KEY = 'songs'
+const STORAGE_KEY = "songs";
 
-const { data } = await useAPI<{ data: Song[] }>("/songs", {
+const { data, status } = await useAPI<{ data: Song[] }>("/songs", {
+   lazy: true,
    getCachedData: (_, __) => {
       if (import.meta.server) return;
 
-      const cached = getLocalStorage()[STORAGE_KEY]
+      const cached = getLocalStorage()[STORAGE_KEY];
       if (!cached) return;
 
       try {
@@ -53,5 +54,7 @@ if (data.value?.data.length) {
 
 <template>
    <audio ref="audioEle" :src="store.currentSong?.song_url" class="hidden"></audio>
-   <Player v-if="audioEle" />
+
+   <p v-if="status === 'pending'">Loading</p>
+   <Player v-else-if="audioEle" />
 </template>
